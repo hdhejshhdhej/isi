@@ -10,8 +10,7 @@ from typing import Dict
 
 i18n_domain = "bot_translate"
 LOCALES_DIR = 'locales/'
-i18n_cl = I18n(path=LOCALES_DIR, default_locale="en", domain=i18n_domain)
-
+i18n_cl = None
 async def get_lang(user_id):
     # Делаем запрос к базе, узнаем установленный язык
     user = get_userx(user_id=user_id)
