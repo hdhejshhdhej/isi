@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message
 
 from tgbot.config import CURRENCY
@@ -15,7 +14,7 @@ from tgbot.utils.states import SearchScoring
 router_scoring = Router()
 
 
-@router_scoring.callback_query(Text(text='choose_scoring'))
+@router_scoring.callback_query(F.data == 'choose_scoring')
 async def start_search_scoring(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['scoring'])
@@ -30,7 +29,7 @@ async def start_search_scoring(call: CallbackQuery, state: FSM, user: UserDB):
     await call.message.edit_text(text=text, reply_markup=rm)
 
 
-@router_scoring.callback_query(Text(text='start_search_scoring'))
+@router_scoring.callback_query(F.data == 'start_search_scoring')
 async def search_people_scoring(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['scoring'])
