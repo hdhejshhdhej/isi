@@ -454,4 +454,13 @@ def create_bdx():
                         "credit REAL DEFAULT 90)")
             print("DB price created")
 
+        # ДОБАВЛЯЕМ НАЧАЛЬНЫЕ ЦЕНЫ, ЕСЛИ ИХ НЕТ
+        check_price = con.execute("SELECT COUNT(*) FROM price").fetchone()[0]
+        if check_price == 0:
+            con.execute("""
+                INSERT INTO price (name_full, name_standart, phone, inn, email, inn_fl, passport, snils, avto, vin, scoring, credit)
+                VALUES (100, 50, 30, 40, 25, 35, 45, 55, 60, 70, 80, 90)
+            """)
+            print("Default prices added")
+
         con.commit()
