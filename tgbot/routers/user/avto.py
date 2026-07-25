@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message
 
 from tgbot.config import CURRENCY
@@ -15,7 +14,7 @@ from tgbot.utils.states import SearchAvto
 router_avto = Router()
 
 
-@router_avto.callback_query(Text(text='choose_avto'))
+@router_avto.callback_query(F.data == 'choose_avto')
 async def choose_search_snils(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['avto'])
@@ -30,7 +29,7 @@ async def choose_search_snils(call: CallbackQuery, state: FSM, user: UserDB):
     await call.message.edit_text(text=text, reply_markup=rm)
 
 
-@router_avto.callback_query(Text(text='start_search_avto'))
+@router_avto.callback_query(F.data == 'start_search_avto')
 async def search_choose_avto(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['avto'])
