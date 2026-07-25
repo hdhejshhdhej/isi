@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message
 
 from tgbot.config import CURRENCY
@@ -15,7 +14,7 @@ from tgbot.utils.states import SearchVin
 router_vin = Router()
 
 
-@router_vin.callback_query(Text(text='choose_vin'))
+@router_vin.callback_query(F.data == 'choose_vin')
 async def choose_search_vin(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['vin'])
@@ -30,7 +29,7 @@ async def choose_search_vin(call: CallbackQuery, state: FSM, user: UserDB):
     await call.message.edit_text(text=text, reply_markup=rm)
 
 
-@router_vin.callback_query(Text(text='start_search_vin'))
+@router_vin.callback_query(F.data == 'start_search_vin')
 async def search_choose_vin(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['vin'])
