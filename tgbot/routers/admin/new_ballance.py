@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import Message, CallbackQuery
 
 from tgbot.config import CURRENCY
@@ -14,7 +13,8 @@ from tgbot.utils.states import NewBallance
 router_new_ballance = Router()
 
 
-@router_new_ballance.message(Text(text="Пополнить баланс"))
+# Изменено: Text -> F.text
+@router_new_ballance.message(F.text == "Пополнить баланс")
 async def new_ballans(message: Message, state: FSM, ):
     await state.clear()
     await message.answer("Отправьте ID пользователя или user_name", reply_markup=back_admin_menu)
@@ -56,7 +56,7 @@ async def amout(message: Message, state: FSM):
         await message.answer("Некорректный ввод", reply_markup=back_admin_menu)
 
 
-@router_new_ballance.message(NewBallance.amout, F.text)
+@router_new_ballance.message(NewBallance.amout)
 async def amout(message: Message):
     await message.answer("Некорректный ввод", reply_markup=back_admin_menu)
 
@@ -69,4 +69,3 @@ async def amout(call: CallbackQuery, bot: Bot, state: FSM):
     await call.message.edit_text('Готово')
     await bot.send_message(chat_id=int(user_id), text=f"Ваш баланс пополнен на {amout} {CURRENCY}")
     await call.answer()
-
