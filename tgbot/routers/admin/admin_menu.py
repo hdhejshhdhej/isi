@@ -1,6 +1,6 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Command, TextFilter
+from aiogram.filters import Command
 from aiogram.types import FSInputFile, Message
 
 from tgbot.keyboards.admin.main import admin_menu, users_admin_menu
@@ -14,14 +14,14 @@ router_admin_menu = Router()
 
 
 # Кнопка - Admin Inline
-@router_admin_menu.message(TextFilter(text="⬅ Админ меню"))
+@router_admin_menu.message(F.text == "⬅ Админ меню")
 @router_admin_menu.message(Command(commands=["admin"]))
 async def admin_menu_(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     await message.answer("Админ меню", reply_markup=admin_menu())
 
 
-@router_admin_menu.message(Text(text="Отмена"))
+@router_admin_menu.message(F.text == "Отмена")
 async def cancel_handler(message: Message, state: FSM) -> None:
     current_state = await state.get_state()
     if current_state is None:
@@ -31,7 +31,7 @@ async def cancel_handler(message: Message, state: FSM) -> None:
 
 
 # Получение Базы Данных и логов
-@router_admin_menu.message(Text(text="Logs&db"))
+@router_admin_menu.message(F.text == "Logs&db")
 async def admin_download_log_db(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     await message.answer_document(FSInputFile(PATH_DATABASE),
@@ -40,7 +40,8 @@ async def admin_download_log_db(message: Message, bot: Bot, state: FSM, rSession
     await message.answer_document(FSInputFile(PATH_LOGS), caption=f"<code>🕰 {get_date()}</code>")
 
 
-@router_admin_menu.message(Text(text="Пользователи"))
+@router_admin_menu.message(F.text == "Пользователи")
 async def admin_menu_(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     await message.answer("Выберете что нужно сделать", reply_markup=users_admin_menu)
+    
