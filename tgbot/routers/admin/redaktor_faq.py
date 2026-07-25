@@ -1,5 +1,4 @@
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import Message, CallbackQuery
 
 from tgbot.keyboards.admin.faq_inline import edit_faq, create_faq
@@ -90,10 +89,8 @@ async def del_faq_handler(call:CallbackQuery):
 
 
 
-@admin_faq_edit.callback_query(Text(text="back_faq"))
+@admin_faq_edit.callback_query(F.data == "back_faq")
 async def back_faq_handler(call:CallbackQuery):
     all_faq = get_all_faq()
     text = "Выберете раздел для редактирования либо создайте новый"
     await call.message.edit_text(text=text, reply_markup=create_faq(all_faq))
-
-
