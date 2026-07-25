@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery
 from aiogram.types import Message
 
@@ -19,7 +18,7 @@ from tgbot.utils.usdt_trc20 import NodeTron
 router_withdraw = Router()
 
 
-@router_withdraw.callback_query(Text(text='withdraw'))
+@router_withdraw.callback_query(F.data == 'withdraw')
 async def withdraw_handler(call: CallbackQuery, state: FSM):
     await state.clear()
     await call.message.edit_text("<b>👇 Вывести</b>\n\n"
@@ -120,4 +119,3 @@ async def adress_withdraw_handler(message: Message, state: FSM, user: UserDB, bo
                                       f"Кошелек {message.text}\n"
                                       f"Пользователь {message.chat.username}\n"
                                       f"User_ID {user.user_id} ")
-
