@@ -12,12 +12,11 @@ from tgbot.utils.const_functions import is_number
 from tgbot.utils.misc.bot_models import UserDB, FSM, RS
 from tgbot.utils.misc_functions import generate_link
 from tgbot.utils.states import Linepay
-from aiogram.filters import Text
 
 router_linepay = Router()
 
 
-@router_linepay.callback_query(Text(text="linepay_deposit"))
+@router_linepay.callback_query(F.data == "linepay_deposit")
 async def input_amount_inepay(call: CallbackQuery, state: FSM, user: UserDB, bot: Bot, ):
     await state.clear()
     text = f'<b>Введите сумму пополнения</b>'
