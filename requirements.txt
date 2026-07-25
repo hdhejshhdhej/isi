@@ -1,0 +1,6 @@
+colorlog
+aiogram~=3.0.0b5
+aiohttp
+typing
+APScheduler
+environs
