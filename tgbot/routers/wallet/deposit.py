@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 from tgbot.utils.misc.bot_models import UserDB, FSM, RS
@@ -16,7 +15,7 @@ router_deposit = Router()
 import tgbot.config as cfg
 
 
-@router_deposit.callback_query(Text(text='wallet'))
+@router_deposit.callback_query(F.data == 'wallet')
 async def wallet_handler(call: CallbackQuery, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     text = f"<b>Ваш ID:  <code>{user.user_id} </code>\n" \
@@ -24,7 +23,7 @@ async def wallet_handler(call: CallbackQuery, bot: Bot, state: FSM, rSession: RS
     await call.message.edit_text(text, reply_markup=my_wallet)
 
 
-@router_deposit.callback_query(Text(text='deposit'))
+@router_deposit.callback_query(F.data == 'deposit')
 async def deposit_handler(call: CallbackQuery, state: FSMContext):
     await state.clear()
     await call.message.edit_text("<b>👆 Пополнить</b>\n\n"
@@ -74,7 +73,7 @@ async def make_deposit_handler(call: CallbackQuery, state: FSMContext):
     await call.answer()
 
 
-@router_deposit.callback_query(Text(text='wallet'))
+@router_deposit.callback_query(F.data == 'wallet')
 async def wallet(call: CallbackQuery, state: FSMContext, user: UserDB):
     await state.clear()
     text = f"<b>Ваш ID:</b>  <code>{user.user_id} </code>\n" \
