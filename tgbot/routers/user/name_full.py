@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message
 
 from tgbot.config import CURRENCY
@@ -16,7 +15,7 @@ from tgbot.utils.states import  SearchNameFull
 router_name_full = Router()
 
 
-@router_name_full.callback_query(Text(text='name_full'))
+@router_name_full.callback_query(F.data == 'name_full')
 async def start_search_name_full(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['name_full'])
@@ -31,7 +30,7 @@ async def start_search_name_full(call: CallbackQuery, state: FSM, user: UserDB):
     await call.message.edit_text(text=text, reply_markup=rm)
 
 
-@router_name_full.callback_query(Text(text='start_search_name_full'))
+@router_name_full.callback_query(F.data == 'start_search_name_full')
 async def search_people_name_full(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['name_full'])
