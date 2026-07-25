@@ -2,7 +2,6 @@
 import os
 
 from aiogram import Router, Bot
-from aiogram.filters import Text
 from aiogram.types import Message, FSInputFile
 
 from tgbot.config import CURRENCY
@@ -19,13 +18,13 @@ router_user_menu = Router()
 
 
 
-@router_user_menu.message(Text(text="🔍 Поиск"))
+@router_user_menu.message(F.text == "🔍 Поиск")
 async def menu_exchange_handler(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     await message.answer("Выберите тип поиска:", reply_markup=search_main())
 
 
-@router_user_menu.message(Text(text="📊 Тарифы"))
+@router_user_menu.message(F.text == "📊 Тарифы")
 async def f1(message: Message, bot: Bot, state: FSM, user: UserDB):
     await state.clear()
 
@@ -44,7 +43,7 @@ async def f1(message: Message, bot: Bot, state: FSM, user: UserDB):
            f"<b>Скоринг запрос:  {price['scoring']} {CURRENCY}</b>\n"
     await message.answer(text=text, reply_markup=user_menu())
 
-@router_user_menu.message(Text(text= "🏦 Кошелек"))
+@router_user_menu.message(F.text == "🏦 Кошелек")
 async def wallet_handler(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     text = f"<b>Ваш ID:  <code>{user.user_id} </code>\n"\
@@ -53,7 +52,7 @@ async def wallet_handler(message: Message, bot: Bot, state: FSM, rSession: RS, u
     await message.answer(text, reply_markup=my_wallet)
 
 
-@router_user_menu.message(Text(text="🧍История запросов"))
+@router_user_menu.message(F.text == "🧍История запросов")
 async def menu_exchange_handler(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
     await message.answer("Выберите тип поиска, для просморта истории запросов", reply_markup=my_history())
