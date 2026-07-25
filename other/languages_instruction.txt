@@ -1,0 +1,22 @@
+# Название - bot_translate
+#
+# Запускаем первый раз
+# 1. Вытаскиваем тексты из файлов (он сам находит)
+pybabel extract . -o locales/bot_translate.pot
+# 2. Создаем папку для перевода на английский
+# pybabel init -i locales/bot_translate.pot -d translations -l es
+pybabel init -i  locales/bot_translate.pot -d locales -D bot_translate -l en
+# 3. То же, на русский
+pybabel init -i locales/bot_translate.pot -d locales -D bot_translate -l ru
+# 4. То же, на украинский
+pybabel init -i locales/bot_translate.pot -d locales -D bot_translate -l uk
+# 5. Переводим, а потом собираем переводы
+pybabel compile -d locales -D bot_translate
+#
+#
+# Обновляем переводы
+# 1. Вытаскиваем тексты из файлов, Добавляем текст в переведенные версии
+pybabel extract . -o locales/bot_translate.pot
+pybabel update -d locales -D bot_translate -i locales/bot_translate.pot
+# 3. Вручную делаем переводы, а потом Собираем
+pybabel compile -d locales -D bot_translate
