@@ -1,6 +1,6 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Command, Text
+from aiogram.filters import Command
 from aiogram.types import FSInputFile, Message
 
 from tgbot.keyboards.admin.main import admin_menu, users_admin_menu
