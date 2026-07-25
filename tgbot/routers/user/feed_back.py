@@ -1,4 +1,3 @@
-from aiogram.filters import Text
 from aiogram.types import Message, CallbackQuery, ChatMemberUpdated
 
 from tgbot.config import ADMIN_ANSWER_GROUP
@@ -10,7 +9,7 @@ feed_user = Router()
 
 
 
-@feed_user.callback_query(Text(text="feed_back"))
+@feed_user.callback_query(F.data == "feed_back")
 async def msg_admin_feed(call:CallbackQuery, state:FSM):
     await state.clear()
     await call.message.answer('Отправьте сообщение, Вам ответит админ.')
