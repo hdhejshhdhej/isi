@@ -9,7 +9,7 @@ from tgbot.services.api_sqlite import get_paymentx
 from tgbot.utils.const_functions import rkb
 
 i18n = i18n_cl
-_ = i18n.gettext
+_ = lambda text: text
 def payment_default():
     payment_kb = ReplyKeyboardBuilder()
     payment = get_paymentx()
