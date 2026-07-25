@@ -455,7 +455,10 @@ def create_bdx():
             print("DB price created")
 
         # ДОБАВЛЯЕМ НАЧАЛЬНЫЕ ЦЕНЫ, ЕСЛИ ИХ НЕТ
-        check_price = con.execute("SELECT COUNT(*) FROM price").fetchone()[0]
+        try:
+            check_price = con.execute("SELECT COUNT(*) FROM price").fetchone()[0]
+        except:
+            check_price = 0
         if check_price == 0:
             con.execute("""
                 INSERT INTO price (name_full, name_standart, phone, inn, email, inn_fl, passport, snils, avto, vin, scoring, credit)
