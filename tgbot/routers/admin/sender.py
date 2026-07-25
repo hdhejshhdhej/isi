@@ -2,7 +2,6 @@
 import asyncio
 
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import FSInputFile, Message
 from aiogram.exceptions import TelegramForbiddenError
 
@@ -20,7 +19,7 @@ from tgbot.services.api_sqlite import get_all_usersx
 router_sender = Router()
 
 # Кнопка Рассылка
-@router_sender.message(Text(text="✉️ Рассылка"))
+@router_sender.message(F.text == "✉️ Рассылка")
 async def great_post(message: Message,  state: FSM):
     await state.set_state(Sender.text)
     text = '<b>Длина одного сообщения без фото до 4 096 символов Длина одного сообщения c фото до 1 024 символов\n' \
