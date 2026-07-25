@@ -12,7 +12,7 @@ ADMINS =[int(i) for i in env.list("ADMINS")]
 
 CURRENCY = env.str("CURRENCY")
 HIMERA_KEY = env.str("HIMERA_KEY")
-scheduler = AsyncIOScheduler(timezone="Europe/Kiev")
+scheduler = AsyncIOScheduler(timezone="UTC")
 
 PATH_DATABASE = "tgbot/data/database.db"  # Путь к БД
 PATH_LOGS = "tgbot/data/logs.log"  # Путь к Логам
