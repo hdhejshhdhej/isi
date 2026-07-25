@@ -20,12 +20,11 @@ from tgbot.utils.misc.bot_models import UserDB, FSM, RS
 from tgbot.utils.misc_functions import send_admins
 from tgbot.utils.states import StorageQiwi
 from pyqiwip2p import QiwiP2P
-from aiogram.filters import Text
 
 router_qiwi = Router()
 
 
-@router_qiwi.callback_query(Text(text="qiwi_deposit"))
+@router_qiwi.callback_query(F.data == "qiwi_deposit")
 async def input_amount(call: CallbackQuery, state: FSM, user: UserDB, bot: Bot,):
     await state.clear()
     text = f'<b>Адрес кошелька QIWI: <code>{PHONE}</code>\nКоментарий:   <code>{user.user_id}</code></b>'
