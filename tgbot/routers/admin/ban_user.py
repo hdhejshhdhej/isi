@@ -1,5 +1,4 @@
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import Message, CallbackQuery
 
 from tgbot.config import ADMINS, CURRENCY
@@ -11,7 +10,8 @@ from tgbot.utils.states import SearchUser
 
 router_ban = Router()
 
-@router_ban.message(Text(text="Инфо/Бан"))
+# Изменено: Text -> F.text
+@router_ban.message(F.text == "Инфо/Бан")
 async def new_ballans(message: Message, state: FSM, ):
     await state.clear()
     await message.answer("Отправьте ID пользователя или user_name", reply_markup=back_admin_menu)
@@ -40,6 +40,7 @@ async def new_ballans(message: Message, state: FSM, ):
     else:
         await message.answer("Некорректный ввод, повторите попытку", reply_markup=close_this)
 
+
 @router_ban.callback_query(F.data.startswith('blocked_user'))
 @router_ban.callback_query(F.data.startswith('unblocked_user'))
 async def ban_user(call: CallbackQuery, state: FSM,):
@@ -47,7 +48,7 @@ async def ban_user(call: CallbackQuery, state: FSM,):
     data = call.data.split(';')
     ban =  'Нет'  if data[0] == 'blocked_user' else 'ДА'
     usr = get_userx(user_id=int(data[1]))
-    banned = 0  if data[0] == 'blocked_user'else 1
+    banned = 0 if data[0] == 'blocked_user' else 1
     txt = f"<b>ID:</b>  <code>{usr['user_id']} </code>\n" \
           f"<b>Имя:</b>  <code>{usr['first_name']} </code>\n" \
           f"<b>Фамилия:</b>  <code>{usr['last_name']} </code>\n" \
