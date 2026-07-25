@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message
 
 from tgbot.config import CURRENCY
@@ -15,7 +14,7 @@ from tgbot.utils.states import SearchCredit
 router_credit = Router()
 
 
-@router_credit.callback_query(Text(text='choose_credit'))
+@router_credit.callback_query(F.data == 'choose_credit')
 async def start_search_credit(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['credit'])
@@ -31,7 +30,7 @@ async def start_search_credit(call: CallbackQuery, state: FSM, user: UserDB):
     await call.message.edit_text(text=text, reply_markup=rm)
 
 
-@router_credit.callback_query(Text(text='start_search_credit'))
+@router_credit.callback_query(F.data == 'start_search_credit')
 async def search_people_credit(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['credit'])
