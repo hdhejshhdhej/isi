@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
@@ -18,26 +17,15 @@ from tgbot.utils.states import SearchNameStandart
 router_people_data = Router()
 
 
-@router_people_data.callback_query(Text(text="back_search"))
+@router_people_data.callback_query(F.data == "back_search")
 async def menu_exchange_handler(call: CallbackQuery, state: FSM):
     await state.clear()
     await call.message.answer("Выберите тип поиска:", reply_markup=search_main())
     await call.answer()
 
 
-# @router_people_data.callback_query(Text(text='choose_search_people'))
-# async def choose_search_people(call: CallbackQuery, state: FSM, ):
-#     await state.clear()
-#       await call.message.answer("Выберите тип поиска:", reply_markup=search_main())
-
-#     await call.answer()
-
-
-
-
-@router_people_data.callback_query(Text(text='choose_search_people'))
+@router_people_data.callback_query(F.data == 'choose_search_people')
 async def start_search_name_standart(call: CallbackQuery, state: FSM, user: UserDB):
-    # new_ballance_user(user.user_id, 1000)
     await state.clear()
     price = float(get_prices()['name_standart'])
     if price > user.ballance:
@@ -52,7 +40,7 @@ async def start_search_name_standart(call: CallbackQuery, state: FSM, user: User
 
 
 #  Фамилия
-@router_people_data.callback_query(Text(text='start_search_people_standart'))
+@router_people_data.callback_query(F.data == 'start_search_people_standart')
 async def search_people_standart(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['name_standart'])
