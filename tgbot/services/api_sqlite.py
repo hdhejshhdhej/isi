@@ -302,17 +302,17 @@ def delete_data_payment(**kwargs):
         sql, parameters = update_format(sql, kwargs)
         con.execute(sql, parameters)
         con.commit()
+
 ######################################## СОЗДАНИЕ БАЗЫ ДАННЫХ ######################################
 # Создание всех таблиц для Базы Данных
 def create_bdx():
     with sqlite3.connect(PATH_DATABASE) as con:
         con.row_factory = dict_factory
 
-        # Таблица с хранением пользователей
+        # Таблица пользователей
         check_sql = con.execute("PRAGMA table_info(storage_users)").fetchall()
-        check_create_users = [c for c in check_sql]
-        if len(check_create_users) == 10:
-            print("DB was found(1/1)")
+        if len(check_sql) == 10:
+            print("DB users found")
         else:
             con.execute("CREATE TABLE storage_users("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -325,15 +325,12 @@ def create_bdx():
                         "message_thread INTEGER,"
                         "ban INTEGER default 0,"
                         "user_date TIMESTAMP)")
-            print("DB was not found(1/1) | Creating...")
-        con.commit()
-        check_sql_wallets = con.execute("PRAGMA table_info(wallets)").fetchall()
-        check_wallets = [c for c in check_sql_wallets]
-        if len(check_wallets) == 6:
-            # con.execute("ALTER TABLE wallets ADD COLUMN address_busd TEXT")
-            # con.execute("ALTER TABLE wallets ADD COLUMN primary_key_busd TEXT")
+            print("DB users created")
 
-            print("DB  wallets(2/5) was found")
+        # Таблица кошельков
+        check_sql = con.execute("PRAGMA table_info(wallets)").fetchall()
+        if len(check_sql) >= 6:
+            print("DB wallets found")
         else:
             con.execute("CREATE TABLE wallets("
                         "increment INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -342,25 +339,24 @@ def create_bdx():
                         "primary_key_busd TEXT, "
                         "address_usdt_trc20 TEXT, "
                         "primary_key_usdt_trc20 TEXT)")
-            print("DB was not found(1/1) | Creating table wallets")
-            con.commit()
-        check_sql = con.execute("PRAGMA table_info(faq)")
-        check_sql = check_sql.fetchall()
-        check_purchases = [c for c in check_sql]
-        if len(check_purchases) == 4:
-            print("DB purchases was found")
+            print("DB wallets created")
+
+        # Таблица FAQ
+        check_sql = con.execute("PRAGMA table_info(faq)").fetchall()
+        if len(check_sql) >= 4:
+            print("DB faq found")
         else:
             con.execute("CREATE TABLE faq("
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                         "name_button TEXT, "
-                        "description INTEGER,"
-                        "is_show BOOL default FALSE )")
-            print("DB purchases was not found | Creating...")
-        check_sql = con.execute("PRAGMA table_info(storage_payment)")
-        check_sql = check_sql.fetchall()
-        check_create_payment = [c for c in check_sql]
-        if len(check_create_payment) == 6:
-            print("DB was found(2/8)")
+                        "description TEXT,"
+                        "is_show INTEGER DEFAULT 1)")
+            print("DB faq created")
+
+        # Таблица платежей
+        check_sql = con.execute("PRAGMA table_info(storage_payment)").fetchall()
+        if len(check_sql) >= 6:
+            print("DB payment found")
         else:
             con.execute("CREATE TABLE storage_payment("
                         "qiwi_login TEXT, qiwi_token TEXT, "
@@ -372,13 +368,12 @@ def create_bdx():
                         "way_payment, status) "
                         "VALUES (?, ?, ?, ?, ?, ?)",
                         ["None", "None", "None", "None", "form", "False"])
-            print("DB was not found(2/8) | Creating...")
-        # Создание БД с хранением пополнений пользователей
-        check_sql = con.execute("PRAGMA table_info(storage_refill)")
-        check_sql = check_sql.fetchall()
-        check_create_refill = [c for c in check_sql]
-        if len(check_create_refill) == 10:
-            print("DB was found(4/8)")
+            print("DB payment created")
+
+        # Таблица пополнений
+        check_sql = con.execute("PRAGMA table_info(storage_refill)").fetchall()
+        if len(check_sql) >= 10:
+            print("DB refill found")
         else:
             con.execute("CREATE TABLE storage_refill("
                         "increment INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -387,19 +382,76 @@ def create_bdx():
                         "amount TEXT, receipt TEXT, "
                         "way_pay TEXT, dates TIMESTAMP, "
                         "dates_unix TEXT)")
-            print("DB was not found(4/8) | Creating...")
-        con.commit()
-        # Создание БД с хранением пополнений пользователей
-        check_sql = con.execute("PRAGMA table_info(qiwi_last)")
-        check_sql = check_sql.fetchall()
-        check_create_refill = [c for c in check_sql]
-        if len(check_create_refill) == 1:
-            print("DB was found(4/8)")
+            print("DB refill created")
+
+        # Таблица qiwi_last
+        check_sql = con.execute("PRAGMA table_info(qiwi_last)").fetchall()
+        if len(check_sql) >= 1:
+            print("DB qiwi_last found")
         else:
             con.execute("CREATE TABLE qiwi_last("
                         "dates TEXT default '0')")
-            print("DB was not found(4/8) | Creating...")
+            print("DB qiwi_last created")
+
+        # Новая таблица request_storage
+        check_sql = con.execute("PRAGMA table_info(request_storage)").fetchall()
+        if len(check_sql) >= 5:
+            print("DB request_storage found")
+        else:
+            con.execute("CREATE TABLE request_storage("
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "user_id INTEGER, "
+                        "type_request TEXT, "
+                        "data TEXT, "
+                        "answer TEXT)")
+            print("DB request_storage created")
+
+        # Новая таблица recipient
+        check_sql = con.execute("PRAGMA table_info(recipient)").fetchall()
+        if len(check_sql) >= 5:
+            print("DB recipient found")
+        else:
+            con.execute("CREATE TABLE recipient("
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "user_id INTEGER, "
+                        "amount REAL, "
+                        "status TEXT, "
+                        "create_date TEXT, "
+                        "hashmd5 TEXT)")
+            print("DB recipient created")
+
+        # Новая таблица users_manage_pay_data
+        check_sql = con.execute("PRAGMA table_info(users_manage_pay_data)").fetchall()
+        if len(check_sql) >= 5:
+            print("DB users_manage_pay_data found")
+        else:
+            con.execute("CREATE TABLE users_manage_pay_data("
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "user_id INTEGER, "
+                        "amount REAL, "
+                        "card_number TEXT, "
+                        "message_id INTEGER)")
+            print("DB users_manage_pay_data created")
+
+        # ТАБЛИЦА PRICE (самая важная для тарифов!)
+        check_sql = con.execute("PRAGMA table_info(price)").fetchall()
+        if len(check_sql) >= 12:
+            print("DB price found")
+        else:
+            con.execute("CREATE TABLE price("
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        "name_full REAL DEFAULT 100, "
+                        "name_standart REAL DEFAULT 50, "
+                        "phone REAL DEFAULT 30, "
+                        "inn REAL DEFAULT 40, "
+                        "email REAL DEFAULT 25, "
+                        "inn_fl REAL DEFAULT 35, "
+                        "passport REAL DEFAULT 45, "
+                        "snils REAL DEFAULT 55, "
+                        "avto REAL DEFAULT 60, "
+                        "vin REAL DEFAULT 70, "
+                        "scoring REAL DEFAULT 80, "
+                        "credit REAL DEFAULT 90)")
+            print("DB price created")
+
         con.commit()
-
-
-
