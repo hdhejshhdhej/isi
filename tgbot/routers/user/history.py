@@ -3,7 +3,6 @@ import json
 
 from aiofiles import os
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message, FSInputFile
 
 from tgbot.config import CURRENCY
@@ -42,7 +41,7 @@ async def start_search_name_full(call: CallbackQuery, state: FSM, user: UserDB):
     kb = pag_history(0, cnt_req, id, type_request)
     await call.message.edit_text(text=text, reply_markup=kb)
 
-@router_history.callback_query(Text(text="back_history"))
+@router_history.callback_query(F.data == "back_history")
 async def menu_back_history(call: CallbackQuery, bot: Bot, state: FSM,  user: UserDB):
     await state.clear()
     await call.message.edit_text("Выберите тип поиска, для просморта истории запросов", reply_markup=my_history())
@@ -116,4 +115,3 @@ async def menu_download(call: CallbackQuery, bot: Bot, state: FSM,  user: UserDB
     document = FSInputFile(f"{date}.txt")
     await bot.send_document(chat_id=user.user_id, document=document)
     await os.remove(f"{date}.txt")
-
