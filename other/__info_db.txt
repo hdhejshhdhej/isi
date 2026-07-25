@@ -1,1 +1,9 @@
-
+storage_users  Хранение пользователей
+0 - id(int) - инкремент
+1 - user_id(int) - айди юзера
+2 - user_name(text) - логин юзера
+3 - first_name(text) - имя юзера
+4 - last_name(text) - фамилия юзера
+5 - lang(text) -язык
+5 - user_date(timestamp) - дата регистрации
+6 - user_unix(int) - дата регистрации в unix
