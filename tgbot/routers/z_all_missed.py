@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
-from aiogram import types, Router, Bot
-from aiogram.filters import Text
+from aiogram import types, Router, Bot, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
@@ -9,14 +8,14 @@ from tgbot.utils.misc.bot_models import FSM
 router_missed = Router()
 
 
-@router_missed.callback_query(Text(text="close_this"))
+@router_missed.callback_query(F.data == "close_this")
 async def processing_callback_remove(call: CallbackQuery, state: FSM):
     await state.clear()
     await call.message.delete()
 
 
 # Колбэк с обработкой кнопки
-@router_missed.callback_query(Text(text="..."))
+@router_missed.callback_query(F.data == "...")
 async def processing_callback_answer(call: CallbackQuery, state: FSM):
     await call.answer(cache_time=20)
 
@@ -35,6 +34,6 @@ async def processing_callback_missed(call: CallbackQuery, state: FSM):
 
 # Обработка всех неизвестных команд
 @router_missed.message()
-async def processing_message_missed(message: types.Message, bot:Bot):
+async def processing_message_missed(message: types.Message, bot: Bot):
     await message.answer("♦ Неизвестная команда.\n"
                          "▶ Введите /start")
