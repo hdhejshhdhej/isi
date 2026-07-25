@@ -30,6 +30,6 @@ ADMIN_ANSWER_GROUP= env.int('Admin_answer')
 TOKEN_QIWI= env.str('TOKEN_QIWI')
 PHONE= env.str('PHONE')
 
-m_id= env.int('m_id')
+m_id=0 env.int('m_id')
 m_secret_1= env.str('m_secret_1')
 m_secret_2= env.str('m_secret_2')
