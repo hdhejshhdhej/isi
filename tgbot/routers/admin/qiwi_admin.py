@@ -12,15 +12,13 @@ from tgbot.utils.misc.bot_models import UserDB, FSM, RS
 from tgbot.utils.misc_functions import send_admins
 import aiohttp
 from pyqiwip2p import QiwiP2P
-from aiogram.filters import Text
-
 
 from tgbot.utils.states import StorageQiwi
 
 router_admin_qiwi = Router()
 
 
-@router_admin_qiwi.message(Text(text="Qiwi"), )
+@router_admin_qiwi.message(F.text == "Qiwi")
 async def payments_systems(message: Message, state: FSM):
     await state.clear()
     await message.answer("🔑 Настройка платежных системы.", reply_markup=payment_default())
@@ -36,7 +34,7 @@ async def payments_systems(message: Message, state: FSM):
 ###################################################################################
 ########################### ВКЛЮЧЕНИЕ/ВЫКЛЮЧЕНИЕ ПОПОЛНЕНИЯ #######################
 # Включение пополнения
-@router_admin_qiwi.message(Text(text="🔴 Выключить пополнения"))
+@router_admin_qiwi.message(F.text == "🔴 Выключить пополнения")
 async def turn_off_refill(message: Message, state: FSM, bot: Bot):
     await state.clear()
     update_paymentx(status="False")
@@ -48,7 +46,7 @@ async def turn_off_refill(message: Message, state: FSM, bot: Bot):
 
 
 # Выключение пополнения
-@router_admin_qiwi.message(Text(text="🟢 Включить пополнения"))
+@router_admin_qiwi.message(F.text == "🟢 Включить пополнения")
 async def turn_on_refill(message: Message, state: FSM, bot: Bot):
     await state.clear()
     update_paymentx(status="True")
@@ -103,7 +101,7 @@ async def input_amount_(call: CallbackQuery, state: FSM, bot: Bot):
 ###################################################################################
 ####################################### QIWI ######################################
 # Изменение QIWI кошелька
-@router_admin_qiwi.message(Text(text="🥝 Изменить QIWI 🖍" ))
+@router_admin_qiwi.message(F.text == "🥝 Изменить QIWI 🖍")
 async def change_qiwi_login(message: Message, state: FSM):
     await state.clear()
     await message.answer("<b>🥝 Введите</b> <code>логин(номер)</code> <b>QIWI кошелька🖍 </b>")
@@ -111,7 +109,7 @@ async def change_qiwi_login(message: Message, state: FSM):
 
 
 # Проверка работоспособности QIWI
-@router_admin_qiwi.message(Text(text="🥝 Проверить QIWI ♻"))
+@router_admin_qiwi.message(F.text == "🥝 Проверить QIWI ♻")
 async def check_qiwi(message: Message, state: FSM):
     await state.clear()
     get_payments = get_paymentx()
@@ -153,7 +151,7 @@ async def check_qiwi(message: Message, state: FSM):
 
 
 # Обработка кнопки "Баланс Qiwi"
-@router_admin_qiwi.message(Text( text="🥝 Баланс QIWI 👁"))
+@router_admin_qiwi.message(F.text == "🥝 Баланс QIWI 👁")
 async def balance_qiwi(message: Message, state: FSM):
     await state.clear()
     get_payments = get_paymentx()
