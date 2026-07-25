@@ -6,3 +6,4 @@ APScheduler
 environs
 pyqiwip2p
 tronpy
+web3
