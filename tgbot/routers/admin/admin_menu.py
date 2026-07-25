@@ -1,6 +1,6 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Command
+from aiogram.filters import Command, TextFilter
 from aiogram.types import FSInputFile, Message
 
 from tgbot.keyboards.admin.main import admin_menu, users_admin_menu
@@ -14,7 +14,7 @@ router_admin_menu = Router()
 
 
 # Кнопка - Admin Inline
-@router_admin_menu.message(Text(text="⬅ Админ меню"))
+@router_admin_menu.message(TextFilter(text="⬅ Админ меню"))
 @router_admin_menu.message(Command(commands=["admin"]))
 async def admin_menu_(message: Message, bot: Bot, state: FSM, rSession: RS, user: UserDB):
     await state.clear()
