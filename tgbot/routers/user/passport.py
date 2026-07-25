@@ -1,6 +1,5 @@
 # - *- coding: utf- 8 - *-
 from aiogram import Router, Bot, F
-from aiogram.filters import Text
 from aiogram.types import CallbackQuery, Message
 
 from tgbot.config import CURRENCY
@@ -15,7 +14,7 @@ from tgbot.utils.states import SearchPassport
 router_passport = Router()
 
 
-@router_passport.callback_query(Text(text='choose_passport'))
+@router_passport.callback_query(F.data == 'choose_passport')
 async def choose_passport(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['passport'])
@@ -30,7 +29,7 @@ async def choose_passport(call: CallbackQuery, state: FSM, user: UserDB):
     await call.message.edit_text(text=text, reply_markup=rm)
 
 
-@router_passport.callback_query(Text(text='start_search_passport'))
+@router_passport.callback_query(F.data == 'start_search_passport')
 async def search_passport(call: CallbackQuery, state: FSM, user: UserDB):
     await state.clear()
     price = float(get_prices()['passport'])
